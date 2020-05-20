@@ -1,7 +1,9 @@
-function getData(cb) {
+const baseUrl = "https://ci-swapi.herokuapp.com/api/";
+
+function getData(type, cb) {
   var xhr = new XMLHttpRequest();
 
-  xhr.open("GET", "https://ci-swapi.herokuapp.com/api/");
+  xhr.open("GET", baseUrl + type + "/");
   xhr.send();
 
   xhr.onreadystatechange = function () {
@@ -11,6 +13,15 @@ function getData(cb) {
   };
 }
 
-getData(function (data) {
-  console.log(data);
-});
+function writeToDocument(type) {
+  var el = document.getElementById("data");
+  el.innerHTML = "";
+
+  getData(type, function (data) {
+    data = data.results;
+
+    data.forEach(function (item) {
+      el.innerHTML += "<p>" + item.name + "</p>";
+    });
+  });
+}
